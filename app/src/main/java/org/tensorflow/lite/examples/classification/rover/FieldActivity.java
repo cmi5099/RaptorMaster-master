@@ -11,8 +11,9 @@ public class FieldActivity {
     double fieldWidth;
     double fieldLength;
 
-    int blockWidth;
-    int blockLength;
+    double blockWidth = 2.5;
+    double blockLength = 5;
+
     int blocksPerLane;
     int lanes;
 
@@ -20,9 +21,10 @@ public class FieldActivity {
     static int searched = 1;
     static int found = 2;
 
-    //Sets bockWidth, blockLength, blocksPerLane, lanes
+    //Sets blocksPerLane, lanes
     void calculateFieldParams(double fieldWidth, double fieldLength) {
-
+        lanes = (int) (fieldWidth / blockWidth);
+        blocksPerLane = (int) (fieldLength / blockLength);
     }
 
     //Does math to calculate the degree at which the rover should turn its wheels in order to get

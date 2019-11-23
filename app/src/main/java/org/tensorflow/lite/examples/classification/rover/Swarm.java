@@ -26,10 +26,15 @@ public class Swarm {
     //Called when rover reaches the beginning of the last block
     //Uses fieldParams.getTurningRadius() to decide the angle
     //to turn the rover into the other lane
-    void turnRight(){
+    void turnRight() {
 
     }
 
+    //Called at the end of finding everything, if there are still lanes unsearched, the rover that
+    //is assigned those lanes will go around the ball and continue searching
+    void goAroundVictim(){
+
+    }
 
     //Called when rover reaches the beginning of the last block
     //Uses fieldParams.getTurningRadius() to decide the angle
