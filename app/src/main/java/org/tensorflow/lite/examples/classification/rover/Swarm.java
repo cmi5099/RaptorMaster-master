@@ -11,16 +11,16 @@ public class Swarm {
     int goAroundVictim =6;
 
     //Initializes the rover
-    void initializeRover(){
+    public void startSwarm(){
+        //Starts all the logic, sends directions to arduino when we need to and is the main controller
         //usesFieldParams
-        //usesCurrentDirection()
+        //usesCurrentDirection
         //alignWheels()
     }
 
     //Turns wheels all the way to the left, then right, then aligns to the
     //middle
     void alignWheels(){
-        
 
     }
 
@@ -31,9 +31,12 @@ public class Swarm {
     }
 
     //Called when rover reaches the beginning of the last block
-    //Uses fieldParams.getTurningRadius() to decide the angle
-    //to turn the rover into the other lane
     void turnRight() {
+
+    }
+
+    //Called when rover reaches the beginning of the last block
+    void turnLeft(){
 
     }
 
@@ -43,23 +46,18 @@ public class Swarm {
 
     }
 
-    //Called when rover reaches the beginning of the last block
-    //Uses fieldParams.getTurningRadius() to decide the angle
-    //to turn the rover into the other lane
-    void turnLeft(){
-
-    }
-
+    //Goes through the int [][] and makes the next one updated to searched()
     void goForward(){
 
     }
 
-    //Called when TensorFlow object confidence %>75 && soccer ball
+    //Called when TensorFlow object confidence %60 && soccer ball
     //Sends notification to ServiceNow. Notifies other raptors
     void found(){
 
     }
 
+    //Called when something is found and just stops the rover
     void stop(){
 
     }
