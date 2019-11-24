@@ -38,16 +38,18 @@ public class Bluetooth extends AppCompatActivity  {
     public TextView TempInfo;
     public TextView HumidityInfo;
     public TextView PressureInfo;
+    private TextView mBluetoothStatus;
+
 
     BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     BluetoothLeScanner bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
     BluetoothDevice bluetoothDevice;
 
     //ClimateServices UUID
-    UUID CLIMATESENSORS_UUID = UUID.fromString("db2d0d1f-68d4-4bd1-8692-d4cb7986b3c1");
+    UUID CLIMATESENSORS_UUID = UUID.fromString("6E400001-B5A3-F393-E0A9-E50E24DCCA9E");
 
     //Temp Characteristic UUID
-    UUID TEMPERATURE_UUID = UUID.fromString("9475d433-6f83-460d-8fcc-eefd6758db50");
+    UUID TRANSFER_UUID = UUID.fromString("6E400003-B5A3-F393-E0A9-E50E24DCCA9E");
 
     //Hum Characteristic UUID
     UUID HUMIDITY_UUID = UUID.fromString("0d53afd9-c0a5-4de4-971f-30ef87bdb046");
@@ -59,9 +61,9 @@ public class Bluetooth extends AppCompatActivity  {
 
     List<ScanFilter> filters = null;
 
-    byte[] currentTemperature;
-    byte[] currentHumidity;
-    byte[] currentPressure;
+    String currentTemperature;
+//    byte[] currentHumidity;
+//    byte[] currentPressure;
 
     //Convert Incoming Sensor Data from byte to float.
 
@@ -77,6 +79,7 @@ public class Bluetooth extends AppCompatActivity  {
         TempInfo = findViewById(R.id.temp);
         HumidityInfo = findViewById(R.id.humidity);
         PressureInfo = findViewById(R.id.pressure);
+        mBluetoothStatus = (TextView)findViewById(R.id.bluetoothStatus);
 
         //Check that bluetooth is enabled - If not, request to turn on
         if (bluetoothAdapter == null || (!bluetoothAdapter.isEnabled())) {
@@ -148,7 +151,9 @@ public class Bluetooth extends AppCompatActivity  {
 
                     final List<BluetoothGattService> services = gatt.getServices();
                     Log.i(TAG, String.format(Locale.ENGLISH, "discovered %d services for %s", services.size(), bluetoothAdapter.getName()));
+                    mBluetoothStatus.setText("Connected to Device: ");
                 } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
+                    mBluetoothStatus.setText("Not Connected");
                     gatt.close();
                 } else {
                 }
@@ -164,13 +169,13 @@ public class Bluetooth extends AppCompatActivity  {
             super.onServicesDiscovered(gatt, status);
 
             if (status == GATT_SUCCESS) {
-                BluetoothGattCharacteristic temp = gatt.getService(CLIMATESENSORS_UUID).getCharacteristic(TEMPERATURE_UUID);
-                BluetoothGattCharacteristic humidity = gatt.getService(CLIMATESENSORS_UUID).getCharacteristic(HUMIDITY_UUID);
-                BluetoothGattCharacteristic pressure = gatt.getService(CLIMATESENSORS_UUID).getCharacteristic(PRESSURE_UUID);
+                BluetoothGattCharacteristic temp = gatt.getService(CLIMATESENSORS_UUID).getCharacteristic(TRANSFER_UUID);
+//                BluetoothGattCharacteristic humidity = gatt.getService(CLIMATESENSORS_UUID).getCharacteristic(HUMIDITY_UUID);
+//                BluetoothGattCharacteristic pressure = gatt.getService(CLIMATESENSORS_UUID).getCharacteristic(PRESSURE_UUID);
 
                 chars.add(temp);
-                chars.add(humidity);
-                chars.add(pressure);
+//                chars.add(humidity);
+//                chars.add(pressure);
 
                 requestCharacteristics(gatt);
             }
@@ -186,16 +191,20 @@ public class Bluetooth extends AppCompatActivity  {
             super.onCharacteristicRead(gatt, Characteristic, status);
             if (status == 0) {
                 System.out.println("char uuid:"+Characteristic.getUuid());
-                if (Characteristic.getUuid().equals(TEMPERATURE_UUID)) {
-                    currentTemperature = Characteristic.getValue();
-                    System.out.println("char uuid:"+Characteristic.getUuid()+"temprature:"+TEMPERATURE_UUID);
-                    for (byte b : currentTemperature) {
-                        System.out.println(b);
+
+                if (Characteristic.getUuid().equals(TRANSFER_UUID)) {
+//                    currentTemperature = Characteristic.getValue();
+                    System.out.println("char uuid:"+Characteristic.getUuid()+"Temperature:"+TRANSFER_UUID);
+//                    for (String : currentTemperature) {
+//                        System.out.println(CurrentTemperature);
 //                        SensorData.setTemperature(currentTemperature);
-                        TempInfo.setText(b);
+//                        TempInfo.setText(b);
                     }
 
-                } else if (Characteristic.getUuid().equals(HUMIDITY_UUID)) {
+                }
+
+                /*
+                else if (Characteristic.getUuid().equals(HUMIDITY_UUID)) {
                     currentHumidity = Characteristic.getValue();
                     System.out.println("char uuid:"+Characteristic.getUuid()+"humidity:"+HUMIDITY_UUID);
                     for (byte b1 : currentHumidity) {
@@ -211,11 +220,12 @@ public class Bluetooth extends AppCompatActivity  {
                     for (byte b2 : currentPressure) {
                         System.out.println(b2);
 
-                        //                     SensorData.setPressure(convertToFloat(currentPressure);
+//                     SensorData.setPressure(convertToFloat(currentPressure);
                         PressureInfo.setText(b2);
                     }
                 }
+                */
             }
-        }
+        };
     };
-}
+//}
