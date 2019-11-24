@@ -1,8 +1,14 @@
 package org.tensorflow.lite.examples.classification.rover;
 
 public class Swarm {
-    //static (insert datatype here) startingDirection;
-    //(insert datatype here) currentDirection
+
+    int stop = 0;
+    int goForward = 1;
+    int alignWheels = 2;
+    int adjustWheels = 3;
+    int turnLeft = 4;
+    int turnRight = 5;
+    int goAroundVictim =6;
 
     //Initializes the rover
     void initializeRover(){
@@ -14,6 +20,7 @@ public class Swarm {
     //Turns wheels all the way to the left, then right, then aligns to the
     //middle
     void alignWheels(){
+        
 
     }
 
