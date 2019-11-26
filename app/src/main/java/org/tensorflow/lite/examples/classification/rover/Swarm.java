@@ -1,8 +1,11 @@
 package org.tensorflow.lite.examples.classification.rover;
 
+import org.tensorflow.lite.examples.classification.Bluetooth.UartService;
+
 import java.nio.ByteBuffer;
 
 public class Swarm {
+    UartService uart = new UartService();
 
     int stop = 0;
     int goForward = 1;
