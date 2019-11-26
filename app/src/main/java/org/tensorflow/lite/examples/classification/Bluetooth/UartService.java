@@ -1,4 +1,3 @@
-
 package org.tensorflow.lite.examples.classification.Bluetooth;
 
 import android.app.Service;
@@ -33,7 +32,7 @@ public class UartService extends Service {
     private BluetoothAdapter mBluetoothAdapter;
     private String mBluetoothDeviceAddress;
     private BluetoothGatt mBluetoothGatt;
-    public int mConnectionState = STATE_DISCONNECTED;
+    private int mConnectionState = STATE_DISCONNECTED;
 
     private static final int STATE_DISCONNECTED = 0;
     private static final int STATE_CONNECTING = 1;
@@ -64,7 +63,7 @@ public class UartService extends Service {
    
     // Implements callback methods for GATT events that the app cares about.  For example,
     // connection change and services discovered.
-    private final BluetoothGattCallback mGattCallback = new BluetoothGattCallback() {
+    public final BluetoothGattCallback mGattCallback = new BluetoothGattCallback() {
         @Override
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
             String intentAction;
@@ -326,7 +325,7 @@ public class UartService extends Service {
         RxChar.setValue(value);
     	boolean status = mBluetoothGatt.writeCharacteristic(RxChar);
     	
-        Log.d(TAG, "write TXchar - status=" + status);  
+        Log.d(TAG, "write TXchar - status=" + status);
     }
     
     private void showMessage(String msg) {
@@ -339,7 +338,8 @@ public class UartService extends Service {
      * @return A {@code List} of supported services.
      */
     public List<BluetoothGattService> getSupportedGattServices() {
-        if (mBluetoothGatt == null) return null;
+        if (mBluetoothGatt == null)
+            return null;
 
         return mBluetoothGatt.getServices();
     }
