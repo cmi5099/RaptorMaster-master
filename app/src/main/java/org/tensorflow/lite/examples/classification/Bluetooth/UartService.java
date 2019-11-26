@@ -124,7 +124,7 @@ public class UartService extends Service {
         // This is handling for the notification on TX Character of NUS service
         if (TX_CHAR_UUID.equals(characteristic.getUuid())) {
         	
-           // Log.d(TAG, String.format("Received TX: %d",characteristic.getValue() ));
+           //Log.d(TAG, String.format("Received TX: %d",characteristic.getValue() ));
             intent.putExtra(EXTRA_DATA, characteristic.getValue());
         } else {
         	
@@ -214,7 +214,7 @@ public class UartService extends Service {
         }
         // We want to directly connect to the device, so we are setting the autoConnect
         // parameter to false.
-        mBluetoothGatt = device.connectGatt(this, false, mGattCallback);
+        mBluetoothGatt = device.connectGatt(this, true, mGattCallback);
         Log.d(TAG, "Trying to create a new connection.");
         mBluetoothDeviceAddress = address;
         mConnectionState = STATE_CONNECTING;

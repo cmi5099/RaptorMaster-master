@@ -45,6 +45,7 @@ public class Swarm {
 
     //Called when rover reaches the beginning of the last block
     void turnLeft(){
+
         byte [] bytes = ByteBuffer.allocate(4).putInt(turnLeft).array();
         uart.writeRXCharacteristic(bytes);
 

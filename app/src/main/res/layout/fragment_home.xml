@@ -92,40 +92,31 @@
         app:layout_constraintTop_toBottomOf="@+id/location" />
 
     <TextView
-        android:id="@+id/ambientTemp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="36dp"
-        android:text="Ambient Temp"
-        android:textColor="@android:color/white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lat_lng" />
-
-    <TextView
         android:id="@+id/pressure"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="36dp"
         android:text="Pressure"
         android:textColor="@android:color/white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ambientTemp" />
+        tools:layout_editor_absoluteX="245dp"
+        tools:layout_editor_absoluteY="140dp" />
 
     <TextView
         android:id="@+id/relativeHumidity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="36dp"
         android:text="Relative Humidity"
         android:textColor="@android:color/white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pressure" />
+        tools:layout_editor_absoluteX="245dp"
+        tools:layout_editor_absoluteY="159dp" />
+
+    <TextView
+        android:id="@+id/ambientTemp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ambient Temp"
+        android:textColor="@android:color/white"
+        tools:layout_editor_absoluteX="245dp"
+        tools:layout_editor_absoluteY="121dp" />
 
 
     <Button
@@ -171,5 +162,15 @@
         app:layout_constraintHorizontal_bias="0.109"
         app:layout_constraintStart_toEndOf="@+id/textView"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listMessage"
+        android:layout_width="399dp"
+        android:layout_height="230dp"
+        app:layout_constraintBottom_toTopOf="@+id/start_mission_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lat_lng" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -26,11 +26,8 @@ import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
 import org.tensorflow.lite.examples.classification.R;
-
 import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.util.Date;
@@ -58,7 +55,7 @@ public class Bluetooth extends Activity implements RadioGroup.OnCheckedChangeLis
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.fragment_home);
         mBtAdapter = BluetoothAdapter.getDefaultAdapter();
         if (mBtAdapter == null) {
             Toast.makeText(this, "Bluetooth is not available", Toast.LENGTH_LONG).show();
@@ -90,7 +87,7 @@ public class Bluetooth extends Activity implements RadioGroup.OnCheckedChangeLis
                 		
                 		//Connect button pressed, open DeviceListActivity class, with popup windows that scan for devices
                 		
-            			Intent newIntent = new Intent(MainActivity.this, DeviceListActivity.class);
+            			Intent newIntent = new Intent(Bluetooth.this, DeviceListActivity.class);
             			startActivityForResult(newIntent, REQUEST_SELECT_DEVICE);
         			} else {
         				//Disconnect button pressed
