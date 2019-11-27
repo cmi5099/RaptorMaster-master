@@ -41,5 +41,6 @@
             android:screenOrientation="portrait"/>
         <service android:enabled="true" android:name="Bluetooth.UartService" />
         <service android:enabled="true" android:name="Bluetooth.Bluetooth" />
+        <activity android:name=".Bluetooth.Bluetooth"/>
     </application>
 </manifest>
