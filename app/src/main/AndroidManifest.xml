@@ -36,11 +36,20 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".Bluetooth.Bluetooth"
+            android:label="Team 2: Rover"
+            android:windowSoftInputMode="stateHidden"
+            android:configChanges="keyboardHidden|orientation|screenSize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".ClassifierActivity"
             android:label="@string/activity_name_classification"
             android:screenOrientation="portrait"/>
         <service android:enabled="true" android:name="Bluetooth.UartService" />
         <service android:enabled="true" android:name="Bluetooth.Bluetooth" />
-        <activity android:name=".Bluetooth.Bluetooth"/>
     </application>
 </manifest>

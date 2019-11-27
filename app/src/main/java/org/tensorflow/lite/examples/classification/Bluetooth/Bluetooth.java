@@ -40,10 +40,7 @@ public class Bluetooth extends Activity implements RadioGroup.OnCheckedChangeLis
     public static final String TAG = "nRFUART";
     private static final int UART_PROFILE_CONNECTED = 20;
     private static final int UART_PROFILE_DISCONNECTED = 21;
-    private static final int STATE_OFF = 10;
 
-    TextView mRemoteRssiVal;
-    RadioGroup mRg;
     private int mState = UART_PROFILE_DISCONNECTED;
     private UartService mService = null;
     private BluetoothDevice mDevice = null;
@@ -51,7 +48,7 @@ public class Bluetooth extends Activity implements RadioGroup.OnCheckedChangeLis
     private ListView messageListView;
     private ArrayAdapter<String> listAdapter;
     private Button btnConnectDisconnect,btnSend;
-    private EditText edtMessage;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,8 +64,6 @@ public class Bluetooth extends Activity implements RadioGroup.OnCheckedChangeLis
         messageListView.setAdapter(listAdapter);
         messageListView.setDivider(null);
         btnConnectDisconnect=(Button) findViewById(R.id.btn_select);
-        btnSend=(Button) findViewById(R.id.sendButton);
-        edtMessage = (EditText) findViewById(R.id.sendText);
         service_init();
 
      
@@ -84,9 +79,9 @@ public class Bluetooth extends Activity implements RadioGroup.OnCheckedChangeLis
                 }
                 else {
                 	if (btnConnectDisconnect.getText().equals("Connect")){
-                		
+
                 		//Connect button pressed, open DeviceListActivity class, with popup windows that scan for devices
-                		
+
             			Intent newIntent = new Intent(Bluetooth.this, DeviceListActivity.class);
             			startActivityForResult(newIntent, REQUEST_SELECT_DEVICE);
         			} else {
@@ -94,38 +89,12 @@ public class Bluetooth extends Activity implements RadioGroup.OnCheckedChangeLis
         				if (mDevice!=null)
         				{
         					mService.disconnect();
-        					
+
         				}
         			}
                 }
             }
         });
-        // Handle Send button
-        btnSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            	EditText editText = (EditText) findViewById(R.id.sendText);
-            	String message = editText.getText().toString();
-            	byte[] value;
-				try {
-					//send data to service
-					value = message.getBytes("UTF-8");
-					mService.writeRXCharacteristic(value);
-					//Update the log with time stamp
-					String currentDateTimeString = DateFormat.getTimeInstance().format(new Date());
-					listAdapter.add("["+currentDateTimeString+"] TX: "+ message);
-               	 	messageListView.smoothScrollToPosition(listAdapter.getCount() - 1);
-               	 	edtMessage.setText("");
-				} catch (UnsupportedEncodingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-                
-            }
-        });
-     
-        // Set initial UI state
-        
     }
 
     //UART service connected/disconnected
@@ -141,7 +110,7 @@ public class Bluetooth extends Activity implements RadioGroup.OnCheckedChangeLis
         }
 
         public void onServiceDisconnected(ComponentName classname) {
-       ////     mService.disconnect(mDevice);
+//            mService.disconnect(mDevice);
         		mService = null;
         }
     };
@@ -168,7 +137,6 @@ public class Bluetooth extends Activity implements RadioGroup.OnCheckedChangeLis
                          	String currentDateTimeString = DateFormat.getTimeInstance().format(new Date());
                              Log.d(TAG, "UART_CONNECT_MSG");
                              btnConnectDisconnect.setText("Disconnect");
-                             edtMessage.setEnabled(true);
                              btnSend.setEnabled(true);
                              ((TextView) findViewById(R.id.deviceName)).setText(mDevice.getName()+ " - ready");
                              listAdapter.add("["+currentDateTimeString+"] Connected to: "+ mDevice.getName());
@@ -185,7 +153,6 @@ public class Bluetooth extends Activity implements RadioGroup.OnCheckedChangeLis
                     	 	 String currentDateTimeString = DateFormat.getTimeInstance().format(new Date());
                              Log.d(TAG, "UART_DISCONNECT_MSG");
                              btnConnectDisconnect.setText("Connect");
-                             edtMessage.setEnabled(false);
                              btnSend.setEnabled(false);
                              ((TextView) findViewById(R.id.deviceName)).setText("Not Connected");
                              listAdapter.add("["+currentDateTimeString+"] Disconnected to: "+ mDevice.getName());

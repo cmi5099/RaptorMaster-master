@@ -1,7 +1,10 @@
 package org.tensorflow.lite.examples.classification.fragments;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +17,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import org.tensorflow.lite.Tensor;
+import org.tensorflow.lite.TensorFlowLite;
+import org.tensorflow.lite.examples.classification.Bluetooth.Bluetooth;
+import org.tensorflow.lite.examples.classification.Bluetooth.DeviceListActivity;
 import org.tensorflow.lite.examples.classification.R;
 import org.tensorflow.lite.examples.classification.model.SensorDataObject;
 
@@ -32,6 +39,7 @@ public class HomeFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
@@ -81,6 +89,13 @@ public class HomeFragment extends Fragment {
         });
 
         startMissionButton = root.findViewById(R.id.start_mission_button);
+        startMissionButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                mListener.onStartMissionButtonPressed();
+            }
+        });
+
         startMissionButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
