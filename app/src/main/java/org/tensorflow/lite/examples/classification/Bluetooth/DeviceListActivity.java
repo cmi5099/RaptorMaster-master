@@ -95,6 +95,7 @@ public class DeviceListActivity extends Activity {
 
     }
 
+
     private void populateList() {
         /* Initialize device list container */
         Log.d(TAG, "populateList");

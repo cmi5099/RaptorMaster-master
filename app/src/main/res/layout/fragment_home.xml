@@ -57,35 +57,30 @@
         app:layout_constraintTop_toBottomOf="@+id/accelerometer" />
 
     <TextView
-        android:id="@+id/light"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="36dp"
-        android:text="Light"
-        android:textColor="@android:color/white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/acc_values" />
-
-    <TextView
         android:id="@+id/location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginStart="4dp"
         android:text="GPS Location"
         android:textColor="@android:color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/light" />
 
     <TextView
+        android:id="@+id/light"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="Light"
+        android:textColor="@android:color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/acc_values" />
+
+    <TextView
         android:id="@+id/lat_lng"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:text="Latitude:23.524523\nLongitude:43.123423"
         android:textColor="@android:color/white"
         app:layout_constraintStart_toEndOf="@id/location"
@@ -125,12 +120,27 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:layout_margin="16dp"
+        android:layout_marginBottom="80dp"
         android:background="@color/colorAccent"
         android:text="Start New Mission"
         android:textColor="@android:color/holo_blue_dark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.406"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btn_select"
+        android:layout_width="382dp"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom"
+        android:background="@color/colorAccent"
+        android:text="Connect"
+        android:textColor="@android:color/holo_blue_dark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.482"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="600dp" />
 
     <TextView
         android:id="@+id/textView"
@@ -164,13 +174,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/listMessage"
         android:layout_width="399dp"
         android:layout_height="230dp"
         app:layout_constraintBottom_toTopOf="@+id/start_mission_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lat_lng" />
+        app:layout_constraintTop_toBottomOf="@+id/lat_lng"
+        app:layout_constraintVertical_bias="0.093" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
