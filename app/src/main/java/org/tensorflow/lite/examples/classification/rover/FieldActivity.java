@@ -7,14 +7,14 @@ public class FieldActivity {
     double blockWidth = 2.5;
     double blockLength = 5;
 
-    int blocksPerLane;
-    int lanes;
+    private int blocksPerLane;
+    private int lanes;
 
     static int notSearched = 0;
     static int searched = 1;
     static int found = 2;
 
-    int[][] grid = new int[lanes][blocksPerLane];
+    public int[][] grid = new int[lanes][blocksPerLane];
 
 
     //Sets blocksPerLane, lanes
@@ -42,4 +42,11 @@ public class FieldActivity {
         grid[lane][block] = found;
     }
 
+    public int getBlocksPerLane() {
+        return blocksPerLane;
+    }
+
+    public int getLanes() {
+        return lanes;
+    }
 }

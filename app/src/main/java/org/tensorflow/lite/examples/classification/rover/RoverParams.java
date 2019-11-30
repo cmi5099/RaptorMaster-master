@@ -3,7 +3,7 @@ package org.tensorflow.lite.examples.classification.rover;
 public class RoverParams {
     static int roverQuantity;
     static int victimQuantity;
-    static int roverId;
+    private static int roverId;
 
     public static int getRoverQuantity() {
         return roverQuantity;

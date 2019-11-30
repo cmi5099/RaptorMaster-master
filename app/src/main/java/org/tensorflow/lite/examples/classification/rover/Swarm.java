@@ -1,6 +1,5 @@
 package org.tensorflow.lite.examples.classification.rover;
 
-import org.tensorflow.lite.examples.classification.Bluetooth.Bluetooth;
 import org.tensorflow.lite.examples.classification.Bluetooth.UartService;
 
 import java.nio.ByteBuffer;
@@ -16,31 +15,100 @@ public class Swarm {
     int turnRight = 5;
     int goAroundVictim =6;
 
+    //1.if bluetooth connected to arduino start mission
+    //2. allignnwheels
+    //3. rover checks block to search for object
+    //4. if no object found rover moves forward.
+    //5. after each block rover will update field params for each block to notify that block is checked
+    //6. if rover gets to final block rover will make a right turn.
+    //7. if rover detects soccer ball object found
+    //8.
+
     //Initializes the rover
-    public void startSwarm(){
+    //Rovers 1 and 3 are going to start at the bottom of the first and third lanes
+    //Rovers 2 and 4 are going to start at the top of the second and fourth lanes
+    public void startSwarm() {
+        FieldActivity fieldActivity = new FieldActivity();
+        RoverParams rover = new RoverParams();
+        int blocksPerLane = fieldActivity.getBlocksPerLane();
+        int lanes = fieldActivity.getLanes();
+        int roverId = rover.getRoverId();
+        int switchCasesForDirection = 0;
+
         //Starts all the logic, sends directions to arduino when we need to and is the main controller
         //usesFieldParams
         //usesCurrentDirection
         //alignWheels()
 
-        if (Bluetooth != null)
-        {
-            return alignWheels;
+        alignWheels();
+        //start TensorFlow recording
+
+        //For each lane, as long as it's not the last block, go forward
+        //Else switch between turning left and right depending on their rover id and if they turned
+        //right of left last time
+        for(int i = 0; i < lanes; i++){
+            for(int j = 0; i < blocksPerLane; j++) {
+                //Logic while we check every block
+                if (j != blocksPerLane - 1){
+                    goForward();
+                    fieldActivity.searchedBlock(i, j);
+                }
+                //Logic for making the proper U-turn to get into their next designated lane
+                else {
+                    if (switchCasesForDirection == 0) {
+                        switch (roverId % 2) {
+                            case 0: //Rovers 1 and 3
+                                turnRight();
+                                goForward();
+                                goForward();
+                                goForward();
+                                turnRight();
+                                break;
+                            case 1: //Rovers 2 and 4
+                                turnLeft();
+                                goForward();
+                                goForward();
+                                goForward();
+                                turnLeft();
+                                break;
+                        }
+                        switchCasesForDirection = 1;
+                    }
+                    else{
+                        switch (roverId % 2) {
+                            case 0: //Rovers 1 and 3
+                                turnLeft();
+                                goForward();
+                                goForward();
+                                goForward();
+                                turnLeft();
+                                break;
+                            case 1: //Rovers 2 and 4
+                                turnRight();
+                                goForward();
+                                goForward();
+                                goForward();
+                                turnRight();
+                                break;
+                        }
+                        switchCasesForDirection = 0;
+                    }
+
+                }
+
+            }
+
         }
-        else if Bluetooth == null{
-            return System.out.println("not connceted");
-        }
 
 
-
-        while (int block == FieldActivity.notSearched();
-        {
-            return goForward;
-       }
-       (int block == FieldActivity.searched {
-           return; int searched;
-        }
-
+//        while (int block == FieldActivity.notSearched();
+//        {
+//            return goForward;
+//       }
+//       (int block == FieldActivity.searched {
+//           return; int searched;
+//        }
+    }
 
 
 
@@ -101,15 +169,5 @@ public class Swarm {
         uart.writeRXCharacteristic(bytes);
 
     }
-    //1.if bluetooth connected to arduino start mission
-    //2. allignnwheels
-    //3. rover checks block to search for object
-    //4. if no object found rover moves forward.
-    //5. after each block rover will update field params for each block to notify that block is checked
-    //6. if rover gets to final block rover will make a right turn.
-    //7. if rover detects soccer ball object found
-    //8.
 
-
-    }
 }
