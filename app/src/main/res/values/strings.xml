@@ -73,13 +73,12 @@
     <string name="tab_text_3">Rover</string>
     <string name="tab_text_2">Camera</string>
     <string name="tab_text_4">Sensor Data</string>
-
+    <string name="tab_text_5">Arduino</string>
     <string name="acc_format">X:%1$f\nY:%2$f\nZ:%3$f</string>
     <string name="light_format">Light %1$f lx</string>
     <string name="pressure_format">Pressure %1$f hPa or mbar</string>
     <string name="ambient_temp_format">Ambient Temp %1$f °C</string>
     <string name="relative_humidity_format">Relative Humidity %1$f %%</string>
-
     <string name="fingerprint_not_recognized">Fingerprint not recognized. Try again</string>
     <string name="fingerprint_success">Fingerprint recognized</string>
     <string name="item_title">White Mesh Pluto Backpack</string>
@@ -92,7 +91,6 @@
     <string name="use_fingerprint_to_authenticate_key">use_fingerprint_to_authenticate_key</string>
     <string name="description_bugdroid_icon">Android bugdroid image</string>
     <string name="description_fingerprint_icon">Fingerprint icon</string>
-
     <string name="cancel">Cancel</string>
     <string name="use_password">Use password</string>
     <string name="sign_in">Sign in</string>
@@ -106,10 +104,20 @@
     <string name="purchase_button_not_invalidated_description">
         You can proceed to purchase with this button \n even if a new fingerprint is enrolled
     </string>
-
     <string name="mapbox_access_token">pk.eyJ1IjoicmlwNCIsImEiOiJjazJwaGl3cmwwNGZkM2Rtd3N0a3VpbDR3In0.uNWHzZFgCB2DqjrYBI69Wg</string>
+    <string name="launch_arduino_activity">Launch Arduino Activity</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="launch_uart">Launch UART</string>
+    <string name="relative_humidity">Relative Humidity</string>
+    <string name="pressure">Pressure</string>
+    <string name="rover_battery_percentage">Rover Battery Percentage</string>
+    <string name="wifi_status">WiFi Status</string>
+    <string name="accelerometer">Accelerometer</string>
+    <string name="gps_location">GPS Location</string>
+    <string name="light">Light</string>
+    <string name="ambient_temp">Ambient Temp</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
 </resources>

@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import org.tensorflow.lite.examples.classification.fragments.ArduinoDataFragment;
 import org.tensorflow.lite.examples.classification.fragments.CameraFragment;
 import org.tensorflow.lite.examples.classification.fragments.HomeFragment;
 import org.tensorflow.lite.examples.classification.fragments.PlaceholderFragment;
@@ -20,7 +21,7 @@ import org.tensorflow.lite.examples.classification.fragments.SensorsDataFragment
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @StringRes
-    private static final int[] TAB_TITLES = new int[]{R.string.tab_text_1, R.string.tab_text_2, R.string.tab_text_3,R.string.tab_text_4};
+    private static final int[] TAB_TITLES = new int[]{R.string.tab_text_1, R.string.tab_text_2, R.string.tab_text_3,R.string.tab_text_4, R.string.tab_text_5};
     private final Context mContext;
 
     public SectionsPagerAdapter(Context context, FragmentManager fm) {
@@ -39,6 +40,8 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
                 break;
             case 3:
                 return new SensorsDataFragment();
+            case 4:
+                return new ArduinoDataFragment();
         }
         return PlaceholderFragment.newInstance(position + 1);
     }
@@ -52,6 +55,6 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         // Show 4 total pages.
-        return 4;
+        return 5;
     }
 }
