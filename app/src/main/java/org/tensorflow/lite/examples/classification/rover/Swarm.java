@@ -1,5 +1,6 @@
 package org.tensorflow.lite.examples.classification.rover;
 
+import org.tensorflow.lite.examples.classification.Bluetooth.Bluetooth;
 import org.tensorflow.lite.examples.classification.Bluetooth.UartService;
 
 import java.nio.ByteBuffer;
@@ -21,7 +22,29 @@ public class Swarm {
         //usesFieldParams
         //usesCurrentDirection
         //alignWheels()
-    }
+
+        if (Bluetooth != null)
+        {
+            return alignWheels;
+        }
+        else if Bluetooth == null{
+            return System.out.println("not connceted");
+        }
+
+
+
+        while (int block == FieldActivity.notSearched();
+        {
+            return goForward;
+       }
+       (int block == FieldActivity.searched {
+           return; int searched;
+        }
+
+
+
+
+
 
     //Turns wheels all the way to the left, then right, then aligns to the
     //middle
@@ -77,7 +100,16 @@ public class Swarm {
         byte [] bytes = ByteBuffer.allocate(4).putInt(stop).array();
         uart.writeRXCharacteristic(bytes);
 
+    }
+    //1.if bluetooth connected to arduino start mission
+    //2. allignnwheels
+    //3. rover checks block to search for object
+    //4. if no object found rover moves forward.
+    //5. after each block rover will update field params for each block to notify that block is checked
+    //6. if rover gets to final block rover will make a right turn.
+    //7. if rover detects soccer ball object found
+    //8.
+
 
     }
-
 }
