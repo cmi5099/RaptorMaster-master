@@ -15,104 +15,80 @@ public class Swarm {
     int turnRight = 5;
     int goAroundVictim =6;
 
-    //1.if bluetooth connected to arduino start mission
-    //2. allignnwheels
-    //3. rover checks block to search for object
-    //4. if no object found rover moves forward.
-    //5. after each block rover will update field params for each block to notify that block is checked
-    //6. if rover gets to final block rover will make a right turn.
-    //7. if rover detects soccer ball object found
-    //8.
+    FieldActivity fieldActivity = new FieldActivity();
+    RoverParams rover = new RoverParams();
+    int blocksPerLane = fieldActivity.getBlocksPerLane();
+    int lanes = fieldActivity.getLanes();
+    int roverId = rover.getRoverId();
+    int startingLane = roverId;
+    String generalRoverDirection = (rover.isEven() == 0)? "down": "up";
+    int startingBlock = (generalRoverDirection == "up")? 0: blocksPerLane;
 
-    //Initializes the rover
     //Rovers 1 and 3 are going to start at the bottom of the first and third lanes
     //Rovers 2 and 4 are going to start at the top of the second and fourth lanes
     public void startSwarm() {
-        FieldActivity fieldActivity = new FieldActivity();
-        RoverParams rover = new RoverParams();
-        int blocksPerLane = fieldActivity.getBlocksPerLane();
-        int lanes = fieldActivity.getLanes();
-        int roverId = rover.getRoverId();
-        int switchCasesForDirection = 0;
-
-        //Starts all the logic, sends directions to arduino when we need to and is the main controller
-        //usesFieldParams
-        //usesCurrentDirection
-        //alignWheels()
-
         alignWheels();
         //start TensorFlow recording
 
-        //For each lane, as long as it's not the last block, go forward
-        //Else switch between turning left and right depending on their rover id and if they turned
-        //right of left last time
-        for(int i = 0; i < lanes; i++){
-            for(int j = 0; i < blocksPerLane; j++) {
-                //Logic while we check every block
-                if (j != blocksPerLane - 1){
-                    goForward();
-                    fieldActivity.searchedBlock(i, j);
-                }
-                //Logic for making the proper U-turn to get into their next designated lane
-                else {
-                    if (switchCasesForDirection == 0) {
-                        switch (roverId % 2) {
-                            case 0: //Rovers 1 and 3
-                                turnRight();
-                                goForward();
-                                goForward();
-                                goForward();
-                                turnRight();
-                                break;
-                            case 1: //Rovers 2 and 4
-                                turnLeft();
-                                goForward();
-                                goForward();
-                                goForward();
-                                turnLeft();
-                                break;
-                        }
-                        switchCasesForDirection = 1;
+        for (int i = startingLane; i < lanes; i += 4) {
+            switch(generalRoverDirection){
+                case "down":
+                    for (int j = startingBlock - 1; j >= 0; j--) {
+                        runSwarmLogic(i, j);
                     }
-                    else{
-                        switch (roverId % 2) {
-                            case 0: //Rovers 1 and 3
-                                turnLeft();
-                                goForward();
-                                goForward();
-                                goForward();
-                                turnLeft();
-                                break;
-                            case 1: //Rovers 2 and 4
-                                turnRight();
-                                goForward();
-                                goForward();
-                                goForward();
-                                turnRight();
-                                break;
-                        }
-                        switchCasesForDirection = 0;
+                    break;
+                case "up":
+                    for (int j = startingBlock; j < blocksPerLane; j++) {
+                        runSwarmLogic(i, j);
                     }
-
-                }
-
+                    break;
             }
-
         }
-
-
-//        while (int block == FieldActivity.notSearched();
-//        {
-//            return goForward;
-//       }
-//       (int block == FieldActivity.searched {
-//           return; int searched;
-//        }
     }
 
+    void runSwarmLogic(int currentLane, int currentBlock){
+        //Goes forward and marks each block in the grid if it's not the last block
+        if (currentBlock != blocksPerLane - 1 || currentBlock != 1) {
+            //Making objectScanned = pumpkin just so it doesn't fail
+            String objectScanned = "pumpkin";
+            goForward();
+            if (objectScanned != "soccer ball")
+                fieldActivity.searchedBlock(currentLane, currentBlock);
+            else
+                fieldActivity.foundInBlock(currentLane, currentBlock);
+                found();
+        }
+        //Logic for making the proper U-turn to get into their next designated lane
+        else {
+            fieldActivity.searchedBlock(currentLane, currentBlock);
+            switch(generalRoverDirection){
+                case "down":
+                    leftUturn();
+                    generalRoverDirection = "up";
+                    break;
+                case "up":
+                    rightUturn();
+                    generalRoverDirection = "down";
+                    break;
+            }
+        }
+    }
 
+    void rightUturn(){
+        turnRight();
+        goForward();
+        goForward();
+        goForward();
+        turnRight();
+    }
 
-
+    void leftUturn(){
+        turnLeft();
+        goForward();
+        goForward();
+        goForward();
+        turnLeft();
+    }
 
     //Turns wheels all the way to the left, then right, then aligns to the
     //middle
@@ -136,7 +112,6 @@ public class Swarm {
 
     //Called when rover reaches the beginning of the last block
     void turnLeft(){
-
         byte [] bytes = ByteBuffer.allocate(4).putInt(turnLeft).array();
         uart.writeRXCharacteristic(bytes);
 
@@ -150,8 +125,9 @@ public class Swarm {
 
     }
 
-    //Goes through the int [][] and makes the next one updated to searched()
+    //Adjusts wheel direction to stay straight and moves the rover forward one block
     void goForward(){
+        adjustWheelAlignment();
         byte [] bytes = ByteBuffer.allocate(4).putInt(goForward).array();
         uart.writeRXCharacteristic(bytes);
 
@@ -160,7 +136,7 @@ public class Swarm {
     //Called when TensorFlow object confidence %60 && soccer ball
     //Sends notification to ServiceNow. Notifies other raptors
     void found(){
-
+        stop();
     }
 
     //Called when something is found and just stops the rover

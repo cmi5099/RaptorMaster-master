@@ -28,4 +28,7 @@ public class RoverParams {
     public static void setRoverId(int roverId) {
         RoverParams.roverId = roverId;
     }
+
+    //If even, returns 0, else returns 1.
+    public static int isEven() {return (roverId % 2 == 0)? 0:1;}
 }
