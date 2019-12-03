@@ -42,6 +42,7 @@ public class HomeViewModel extends AndroidViewModel implements SensorEventListen
     private Sensor pressureSensor;
     private Sensor ambientTempSensor;
     private Sensor relativeHumiditySensor;
+    private Sensor compassSensor;
 
     public HomeViewModel(Application context) {
         super(context);
@@ -90,12 +91,12 @@ public class HomeViewModel extends AndroidViewModel implements SensorEventListen
 
     public void activatePhoneSensors() {
         manager = (SensorManager) getApplication().getSystemService(Context.SENSOR_SERVICE);
-
         accSensor = manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         lightSensor = manager.getDefaultSensor(Sensor.TYPE_LIGHT);
         pressureSensor = manager.getDefaultSensor(Sensor.TYPE_PRESSURE);
         relativeHumiditySensor = manager.getDefaultSensor(Sensor.TYPE_RELATIVE_HUMIDITY);
         ambientTempSensor = manager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
+        compassSensor = manager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
 
         sensorDO = new SensorDataObject();
 
@@ -109,12 +110,15 @@ public class HomeViewModel extends AndroidViewModel implements SensorEventListen
         Log.i(HomeViewModel.class.getSimpleName(), "Relative Humidity "+isavailable);
         isavailable = manager.registerListener(this, ambientTempSensor, SensorManager.SENSOR_DELAY_NORMAL);
         Log.i(HomeViewModel.class.getSimpleName(), "Ambient Temperature "+isavailable);
+        isavailable = manager.registerListener(this, compassSensor, SensorManager.SENSOR_DELAY_GAME);
+        Log.i(HomeViewModel.class.getSimpleName(), "Compass "+isavailable);
     }
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         // update the sensor object. the object carries latest sensor value by the time it saves to the database.
         float[] values = sensorEvent.values;
+//        float degree = Math.round(event.values[0]);
         switch (sensorEvent.sensor.getType()) {
             case Sensor.TYPE_ACCELEROMETER:
                 sensorDO.setAccx(values[0]);
@@ -134,8 +138,31 @@ public class HomeViewModel extends AndroidViewModel implements SensorEventListen
             case Sensor.TYPE_RELATIVE_HUMIDITY:
                 sensorDO.setRelativeHumidity(values[0]);
                 break;
+            case Sensor.TYPE_ORIENTATION:
+                sensorDO.setCompass(values[0]);
         }
         dataObjectMutableLiveData.postValue(sensorDO);
+
+//        String cardinalOrdinalDirection = "null";
+//
+//        if (sensorDO.setCompass(values[0]) >= 350 || sensorDO.setCompass(values[0]) <= 10)
+//            cardinalOrdinalDirection = "N";
+//        if (degree < 350 && degree > 280)
+//            cardinalOrdinalDirection = "NW";
+//        if (degree <= 280 && degree > 260)
+//            cardinalOrdinalDirection = "W";
+//        if (degree <= 260 && degree > 190)
+//            cardinalOrdinalDirection = "SW";
+//        if (degree <= 190 && degree > 170)
+//            cardinalOrdinalDirection = "S";
+//        if (degree <= 170 && degree > 100)
+//            cardinalOrdinalDirection = "SE";
+//        if (degree <= 100 && degree > 80)
+//            cardinalOrdinalDirection = "E";
+//        if (degree <= 80 && degree > 10)
+//            cardinalOrdinalDirection = "NE";
+//
+//        DegreeTV.setText("Direction: " + cardinalOrdinalDirection + "\nDegrees: " + Float.toString(degree) + "°");
     }
 
     @Override
@@ -150,6 +177,7 @@ public class HomeViewModel extends AndroidViewModel implements SensorEventListen
             manager.unregisterListener(this, pressureSensor);
             manager.unregisterListener(this, ambientTempSensor);
             manager.unregisterListener(this, relativeHumiditySensor);
+            manager.unregisterListener(this, compassSensor);
         }
     }
 

@@ -76,6 +76,7 @@
     <string name="tab_text_5">Arduino</string>
     <string name="acc_format">X:%1$f\nY:%2$f\nZ:%3$f</string>
     <string name="light_format">Light %1$f lx</string>
+    <string name="compass_format">Compass: %.0f </string>
     <string name="pressure_format">Pressure %1$f hPa or mbar</string>
     <string name="ambient_temp_format">Ambient Temp %1$f °C</string>
     <string name="relative_humidity_format">Relative Humidity %1$f %%</string>
@@ -118,6 +119,7 @@
     <string name="gps_location">GPS Location</string>
     <string name="light">Light</string>
     <string name="ambient_temp">Ambient Temp</string>
+    <string name="degree">Degree</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

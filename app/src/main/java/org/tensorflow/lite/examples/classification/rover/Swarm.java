@@ -1,11 +1,15 @@
 package org.tensorflow.lite.examples.classification.rover;
 
 import org.tensorflow.lite.examples.classification.Bluetooth.UartService;
-
+import org.tensorflow.lite.examples.classification.model.SensorDataObject;
 import java.nio.ByteBuffer;
 
 public class Swarm {
+
     UartService uart = new UartService();
+    SensorDataObject sdoCompass = new SensorDataObject();
+    FieldActivity fieldActivity = new FieldActivity();
+    RoverParams rover = new RoverParams();
 
     int stop = 0;
     int goForward = 1;
@@ -15,14 +19,36 @@ public class Swarm {
     int turnRight = 5;
     int goAroundVictim =6;
 
-    FieldActivity fieldActivity = new FieldActivity();
-    RoverParams rover = new RoverParams();
+    float oppositeDirection1, oppositeDirection2, calcDirection;
+    float departureDirection = sdoCompass.getCompass();
     int blocksPerLane = fieldActivity.getBlocksPerLane();
     int lanes = fieldActivity.getLanes();
     int roverId = rover.getRoverId();
     int startingLane = roverId;
     String generalRoverDirection = (rover.isEven() == 0)? "down": "up";
     int startingBlock = (generalRoverDirection == "up")? 0: blocksPerLane;
+
+
+    //Initialize rover orientation using android compass
+    //determine compass degree rover is facing for purpose of lane departure direction and lane return direction
+    public void calcOppositeDirection(int roverId, float direction) {
+
+        calcDirection += 180 + departureDirection;
+
+        if (calcDirection > 360) {
+
+            calcDirection -= 360;
+            oppositeDirection1 = calcDirection;
+        } else {
+            oppositeDirection2 = calcDirection;
+        }
+    }
+
+    public void displayCompassRoverDirection(){
+
+        calcOppositeDirection(roverId, oppositeDirection1);
+        calcOppositeDirection(roverId, oppositeDirection2);
+    }
 
     //Rovers 1 and 3 are going to start at the bottom of the first and third lanes
     //Rovers 2 and 4 are going to start at the top of the second and fourth lanes
@@ -93,15 +119,21 @@ public class Swarm {
     //Turns wheels all the way to the left, then right, then aligns to the
     //middle
     void alignWheels(){
+        byte [] floatBytes = ByteBuffer.allocate(4).putFloat(departureDirection).array();
         byte [] bytes = ByteBuffer.allocate(4).putInt(alignWheels).array();
         uart.writeRXCharacteristic(bytes);
+        uart.writeRXCharacteristic(floatBytes);
     }
 
     //Turns wheels in proper direction and angle to realign arduino
     //back into original orientation while continuing forward
     void adjustWheelAlignment(){
+        byte [] floatD1Bytes = ByteBuffer.allocate(4).putFloat(oppositeDirection1).array();
+        byte [] floatD2Bytes = ByteBuffer.allocate(4).putFloat(oppositeDirection2).array();
         byte [] bytes = ByteBuffer.allocate(4).putInt(adjustWheels).array();
         uart.writeRXCharacteristic(bytes);
+        uart.writeRXCharacteristic(floatD1Bytes);
+        uart.writeRXCharacteristic(floatD2Bytes);
     }
 
     //Called when rover reaches the beginning of the last block

@@ -36,6 +36,7 @@ public class HomeFragment extends Fragment {
     TextView ambientTempTV;
     TextView relativeHumidityTV;
     Button startMissionButton;
+    TextView degreeTV;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -50,6 +51,8 @@ public class HomeFragment extends Fragment {
         pressureTV = root.findViewById(R.id.pressure);
         ambientTempTV = root.findViewById(R.id.ambientTemp);
         relativeHumidityTV = root.findViewById(R.id.relativeHumidity);
+        degreeTV = root.findViewById(R.id.degreeTV);
+
 
         homeViewModel.getBattery().observe(this, new Observer<String>() {
             @Override
@@ -74,6 +77,8 @@ public class HomeFragment extends Fragment {
                 pressureTV.setText(getString(R.string.pressure_format, dataObject.getPressure()));
                 ambientTempTV.setText(getString(R.string.ambient_temp_format, dataObject.getAmbient_temp()));
                 relativeHumidityTV.setText(getString(R.string.relative_humidity_format, dataObject.getRelativeHumidity()));
+                degreeTV.setText(getString(R.string.compass_format, dataObject.getCompass()));
+
             }
         });
 

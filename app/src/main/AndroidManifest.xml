@@ -35,18 +35,26 @@
 
 
         <activity android:name=".Bluetooth.Bluetooth"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="Team 2: Rover"
-            android:windowSoftInputMode="stateHidden">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
+        android:configChanges="keyboardHidden|orientation|screenSize"
+        android:label="Team 2: Rover"
+        android:windowSoftInputMode="stateHidden">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.DEFAULT" />
+        </intent-filter>
+    </activity>
 
 
         <activity android:name=".Bluetooth.DeviceListActivity"
             android:theme="@android:style/Theme.Dialog" />
+
+
+        <activity android:name=".Compass.CompassActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <service
             android:name=".Bluetooth.UartService"

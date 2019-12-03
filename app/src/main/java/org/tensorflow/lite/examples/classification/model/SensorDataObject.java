@@ -16,8 +16,12 @@ public class SensorDataObject {
     float u_pressure;
     float u_humidity;
     float u_battery_level;
+    float u_compass;
 
 
+    public float getCompass() { return u_compass;}
+
+    public void setCompass(float compass) { this.u_compass= compass; }
 
     public float getLight() {
         return u_ambient_light;
@@ -93,7 +97,9 @@ public class SensorDataObject {
                 +", Ambient Temperature:"+u_temperature
                 +", Pressure:"+u_pressure
                 +", Relative Humidity"+u_humidity
-                +", battery :"+u_battery_level;
+                +", battery :"+u_battery_level
+                +", Compass: "+u_compass;
+
     }
 
 

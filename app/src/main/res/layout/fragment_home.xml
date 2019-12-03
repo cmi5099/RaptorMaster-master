@@ -12,7 +12,6 @@
         android:id="@+id/battery"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:text="@string/rover_battery_percentage"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -21,15 +20,13 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.119" />
+        app:layout_constraintVertical_bias="0.046" />
 
     <TextView
         android:id="@+id/wifi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="12dp"
         android:text="@string/wifi_status"
         android:textColor="@android:color/white"
         app:layout_constraintStart_toStartOf="parent"
@@ -39,13 +36,10 @@
         android:id="@+id/accelerometer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="36dp"
         android:text="@string/accelerometer"
         android:textColor="@android:color/white"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/wifi" />
+        app:layout_constraintTop_toBottomOf="@+id/degreeTV" />
 
     <TextView
         android:id="@+id/acc_values"
@@ -94,17 +88,8 @@
         android:layout_height="wrap_content"
         android:text="@string/pressure"
         android:textColor="@android:color/white"
-        tools:layout_editor_absoluteX="245dp"
-        tools:layout_editor_absoluteY="140dp" />
-
-    <TextView
-        android:id="@+id/relativeHumidity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/relative_humidity"
-        android:textColor="@android:color/white"
-        tools:layout_editor_absoluteX="245dp"
-        tools:layout_editor_absoluteY="159dp" />
+        app:layout_constraintStart_toStartOf="@+id/ambientTemp"
+        app:layout_constraintTop_toBottomOf="@+id/ambientTemp" />
 
     <TextView
         android:id="@+id/ambientTemp"
@@ -112,8 +97,17 @@
         android:layout_height="wrap_content"
         android:text="@string/ambient_temp"
         android:textColor="@android:color/white"
-        tools:layout_editor_absoluteX="245dp"
-        tools:layout_editor_absoluteY="121dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/wifi" />
+
+    <TextView
+        android:id="@+id/relativeHumidity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/relative_humidity"
+        android:textColor="@android:color/white"
+        app:layout_constraintStart_toStartOf="@+id/pressure"
+        app:layout_constraintTop_toBottomOf="@+id/pressure" />
 
 
     <Button
@@ -135,7 +129,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="4dp"
         android:layout_weight="0.1"
         android:ellipsize="end"
         android:maxLines="1"
@@ -159,7 +153,6 @@
         app:layout_constraintBottom_toTopOf="@+id/battery"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.109"
-        app:layout_constraintStart_toEndOf="@+id/textView"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -170,12 +163,19 @@
         android:layout_toRightOf="@+id/deviceLabel"
         android:text="@string/no_device"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        app:layout_constraintBottom_toTopOf="@+id/ambientTemp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.482"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/bluetoothStatus"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.314" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/degreeTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Compass"
+        android:textColor="@android:color/white"
+        app:layout_constraintStart_toStartOf="@+id/relativeHumidity"
+        app:layout_constraintTop_toBottomOf="@+id/relativeHumidity" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listMessage"
