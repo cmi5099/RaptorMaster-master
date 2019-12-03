@@ -50,20 +50,22 @@ public class Bluetooth extends Activity implements RadioGroup.OnCheckedChangeLis
     private BluetoothDevice mDevice = null;
     private BluetoothAdapter mBtAdapter = null;
     private ListView messageListView;
+    private ListView FragListView;
     private ArrayAdapter<String> listAdapter;
     private Button btnConnectDisconnect,btnSend;
     private EditText edtMessage;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.fragment_arduino_data);
+
         mBtAdapter = BluetoothAdapter.getDefaultAdapter();
         if (mBtAdapter == null) {
             Toast.makeText(this, "Bluetooth is not available", Toast.LENGTH_LONG).show();
             finish();
             return;
         }
-        messageListView = (ListView) findViewById(R.id.listMessage);
+        messageListView = findViewById(R.id.listMessagefrag);
         listAdapter = new ArrayAdapter<String>(this, R.layout.message_detail);
         messageListView.setAdapter(listAdapter);
         messageListView.setDivider(null);
@@ -344,31 +346,5 @@ public class Bluetooth extends Activity implements RadioGroup.OnCheckedChangeLis
     private void showMessage(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
 
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (mState == UART_PROFILE_CONNECTED) {
-            Intent startMain = new Intent(Intent.ACTION_MAIN);
-            startMain.addCategory(Intent.CATEGORY_HOME);
-            startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(startMain);
-            showMessage("nRFUART's running in background.\n             Disconnect to exit");
-        }
-        else {
-            new AlertDialog.Builder(this)
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setTitle(R.string.popup_title)
-                    .setMessage(R.string.popup_message)
-                    .setPositiveButton(R.string.popup_yes, new DialogInterface.OnClickListener()
-                    {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                        }
-                    })
-                    .setNegativeButton(R.string.popup_no, null)
-                    .show();
-        }
     }
 }
