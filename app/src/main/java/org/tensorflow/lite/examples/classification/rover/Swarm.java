@@ -2,6 +2,7 @@ package org.tensorflow.lite.examples.classification.rover;
 
 import org.tensorflow.lite.examples.classification.Bluetooth.UartService;
 import org.tensorflow.lite.examples.classification.model.SensorDataObject;
+
 import java.nio.ByteBuffer;
 
 public class Swarm {
@@ -14,13 +15,12 @@ public class Swarm {
     int stop = 0;
     int goForward = 1;
     int alignWheels = 2;
-    int adjustWheels = 3;
-    int turnLeft = 4;
-    int turnRight = 5;
-    int goAroundVictim =6;
+    int goAroundVictim =3;
+    int rightUTurn = 4;
+    int leftUTurn = 5;
 
-    float oppositeDirection1, oppositeDirection2, calcDirection;
-    float departureDirection = sdoCompass.getCompass();
+    float oppositeDepartureDirection;
+    float departureDirection;
     int blocksPerLane = fieldActivity.getBlocksPerLane();
     int lanes = fieldActivity.getLanes();
     int roverId = rover.getRoverId();
@@ -29,30 +29,11 @@ public class Swarm {
     int startingBlock = (generalRoverDirection == "up")? 0: blocksPerLane;
 
 
-    //Initialize rover orientation using android compass
-    //determine compass degree rover is facing for purpose of lane departure direction and lane return direction
-    public void calcOppositeDirection(int roverId, float direction) {
-
-        calcDirection += 180 + departureDirection;
-
-        if (calcDirection > 360) {
-
-            calcDirection -= 360;
-            oppositeDirection1 = calcDirection;
-        } else {
-            oppositeDirection2 = calcDirection;
-        }
-    }
-
-    public void displayCompassRoverDirection(){
-
-        calcOppositeDirection(roverId, oppositeDirection1);
-        calcOppositeDirection(roverId, oppositeDirection2);
-    }
-
     //Rovers 1 and 3 are going to start at the bottom of the first and third lanes
     //Rovers 2 and 4 are going to start at the top of the second and fourth lanes
     public void startSwarm() {
+        departureDirection = sdoCompass.getCompass();
+        setOtherDirections();
         alignWheels();
         //start TensorFlow recording
 
@@ -70,6 +51,14 @@ public class Swarm {
                     break;
             }
         }
+        /*  If rovers get to the end of their searches, but found != 4, the rover with
+            unsearched blocks where they should've searched, will go around victim and continue
+            Requirements:
+            1. How many objects are found
+            2. We need to know the status of the rest of the grid
+            3. We need to know if a rover still has blocks to search
+        */
+
     }
 
     void runSwarmLogic(int currentLane, int currentBlock){
@@ -101,19 +90,13 @@ public class Swarm {
     }
 
     void rightUturn(){
-        turnRight();
-        goForward();
-        goForward();
-        goForward();
-        turnRight();
+        byte [] bytes = ByteBuffer.allocate(4).putInt(rightUTurn).array();
+        uart.writeRXCharacteristic(bytes);
     }
 
     void leftUturn(){
-        turnLeft();
-        goForward();
-        goForward();
-        goForward();
-        turnLeft();
+        byte [] bytes = ByteBuffer.allocate(4).putInt(leftUTurn).array();
+        uart.writeRXCharacteristic(bytes);
     }
 
     //Turns wheels all the way to the left, then right, then aligns to the
@@ -121,48 +104,46 @@ public class Swarm {
     void alignWheels(){
         byte [] floatBytes = ByteBuffer.allocate(4).putFloat(departureDirection).array();
         byte [] bytes = ByteBuffer.allocate(4).putInt(alignWheels).array();
-        uart.writeRXCharacteristic(bytes);
-        uart.writeRXCharacteristic(floatBytes);
+        byte[] destination = new byte[bytes.length + floatBytes.length];
+
+        System.arraycopy(bytes, 0, destination, 0, bytes.length);
+        System.arraycopy(floatBytes, 0, destination, bytes.length, floatBytes.length);
+
+        uart.writeRXCharacteristic(destination);
     }
 
-    //Turns wheels in proper direction and angle to realign arduino
-    //back into original orientation while continuing forward
-    void adjustWheelAlignment(){
-        byte [] floatD1Bytes = ByteBuffer.allocate(4).putFloat(oppositeDirection1).array();
-        byte [] floatD2Bytes = ByteBuffer.allocate(4).putFloat(oppositeDirection2).array();
-        byte [] bytes = ByteBuffer.allocate(4).putInt(adjustWheels).array();
-        uart.writeRXCharacteristic(bytes);
-        uart.writeRXCharacteristic(floatD1Bytes);
-        uart.writeRXCharacteristic(floatD2Bytes);
+    //Adjusts wheel direction to stay straight and moves the rover forward one block
+    void goForward(){
+        float degreeAdjustment = adjustWheelAlignment();
+
+        byte [] orderByte = ByteBuffer.allocate(4).putInt(goForward).array();
+        byte [] degreeBytes = ByteBuffer.allocate(4).putFloat(degreeAdjustment).array();
+        byte[] combinedBytes = new byte[orderByte.length + degreeBytes.length];
+
+        System.arraycopy(orderByte, 0, combinedBytes, 0, orderByte.length);
+        System.arraycopy(degreeBytes, 0, combinedBytes, orderByte.length, degreeBytes.length);
+
+        uart.writeRXCharacteristic(combinedBytes);
     }
 
-    //Called when rover reaches the beginning of the last block
-    void turnRight() {
-        byte [] bytes = ByteBuffer.allocate(4).putInt(turnRight).array();
-        uart.writeRXCharacteristic(bytes);
-    }
-
-    //Called when rover reaches the beginning of the last block
-    void turnLeft(){
-        byte [] bytes = ByteBuffer.allocate(4).putInt(turnLeft).array();
-        uart.writeRXCharacteristic(bytes);
-
-    }
+//    //Called when rover reaches the beginning of the last block
+//    void turnRight() {
+//        byte [] bytes = ByteBuffer.allocate(4).putInt(turnRight).array();
+//        uart.writeRXCharacteristic(bytes);
+//    }
+//
+//    //Called when rover reaches the beginning of the last block
+//    void turnLeft(){
+//        byte [] bytes = ByteBuffer.allocate(4).putInt(turnLeft).array();
+//        uart.writeRXCharacteristic(bytes);
+//
+//    }
 
     //Called at the end of finding everything, if there are still lanes unsearched, the rover that
     //is assigned those lanes will go around the ball and continue searching
     void goAroundVictim(){
         byte [] bytes = ByteBuffer.allocate(4).putInt(goAroundVictim).array();
         uart.writeRXCharacteristic(bytes);
-
-    }
-
-    //Adjusts wheel direction to stay straight and moves the rover forward one block
-    void goForward(){
-        adjustWheelAlignment();
-        byte [] bytes = ByteBuffer.allocate(4).putInt(goForward).array();
-        uart.writeRXCharacteristic(bytes);
-
     }
 
     //Called when TensorFlow object confidence %60 && soccer ball
@@ -176,6 +157,37 @@ public class Swarm {
         byte [] bytes = ByteBuffer.allocate(4).putInt(stop).array();
         uart.writeRXCharacteristic(bytes);
 
+    }
+
+    //Turns wheels in proper direction and angle to realign arduino
+    //back into original orientation while continuing forward
+    float adjustWheelAlignment(){
+        float currentDirection = sdoCompass.getCompass();
+
+        //calulcate degree necessary
+        return getAdjustedDegreeForSending(currentDirection);
+    }
+
+    //Initialize rover orientation using android compass
+    //determine compass degree rover is facing for purpose of lane departure direction and lane return direction
+    public float getAdjustedDegreeForSending(float currentDirection) {
+        float degreeForAdjusting = (departureDirection - currentDirection) % 360;
+
+        if (degreeForAdjusting < -180)
+            degreeForAdjusting += 360;
+        if (degreeForAdjusting >= 180)
+            degreeForAdjusting -= 360;
+
+        return degreeForAdjusting;
+    }
+
+    public void setOtherDirections(){
+        /* Add 180 to your current bearing.
+           If the result is more than 360, subtract 360.
+           This number is your opposite direction.
+        */
+        float sum = departureDirection + 180;
+        oppositeDepartureDirection = (sum > 360)? sum - 360 : sum;
     }
 
 }
