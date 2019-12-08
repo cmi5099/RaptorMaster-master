@@ -32,6 +32,9 @@ public class FieldActivity {
         }
     }
 
+    //TODO: updateGrid()
+    //Take in other grids and update this one with updated information
+
     //Changes value next to key from notSearched to searched
     void searchedBlock(int lane, int block) {
         grid[lane][block] = searched;

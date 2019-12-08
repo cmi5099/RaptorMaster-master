@@ -17,9 +17,37 @@ public class SensorDataObject {
     float u_humidity;
     float u_battery_level;
     float u_compass;
+    String u_compass_direction;
 
 
     public float getCompass() { return u_compass;}
+
+    public String getU_compass_direction() {
+        return u_compass_direction;
+    }
+
+    public void setU_compass_direction(float compassValue) {
+        String cardinalOrdinalDirection = "Unavailable";
+        float degree = compassValue;
+
+        if (degree >= 350 || degree <= 10)
+            cardinalOrdinalDirection = "N";
+        if (degree < 350 && degree > 280)
+            cardinalOrdinalDirection = "NW";
+        if (degree <= 280 && degree > 260)
+            cardinalOrdinalDirection = "W";
+        if (degree <= 260 && degree > 190)
+            cardinalOrdinalDirection = "SW";
+        if (degree <= 190 && degree > 170)
+            cardinalOrdinalDirection = "S";
+        if (degree <= 170 && degree > 100)
+            cardinalOrdinalDirection = "SE";
+        if (degree <= 100 && degree > 80)
+            cardinalOrdinalDirection = "E";
+        if (degree <= 80 && degree > 10)
+            cardinalOrdinalDirection = "NE";
+        this.u_compass_direction = cardinalOrdinalDirection;
+    }
 
     public void setCompass(float compass) { this.u_compass= compass; }
 

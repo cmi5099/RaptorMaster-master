@@ -1,10 +1,7 @@
 package org.tensorflow.lite.examples.classification.fragments;
 
-import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +14,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import org.tensorflow.lite.Tensor;
-import org.tensorflow.lite.TensorFlowLite;
-import org.tensorflow.lite.examples.classification.Bluetooth.Bluetooth;
-import org.tensorflow.lite.examples.classification.Bluetooth.DeviceListActivity;
 import org.tensorflow.lite.examples.classification.R;
 import org.tensorflow.lite.examples.classification.model.SensorDataObject;
 
@@ -77,8 +70,7 @@ public class HomeFragment extends Fragment {
                 pressureTV.setText(getString(R.string.pressure_format, dataObject.getPressure()));
                 ambientTempTV.setText(getString(R.string.ambient_temp_format, dataObject.getAmbient_temp()));
                 relativeHumidityTV.setText(getString(R.string.relative_humidity_format, dataObject.getRelativeHumidity()));
-                degreeTV.setText(getString(R.string.compass_format, dataObject.getCompass()));
-
+                degreeTV.setText(getString(R.string.compass_format, dataObject.getCompass()) + dataObject.getU_compass_direction());
             }
         });
 

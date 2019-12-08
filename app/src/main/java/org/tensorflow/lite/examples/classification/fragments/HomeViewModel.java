@@ -140,29 +140,9 @@ public class HomeViewModel extends AndroidViewModel implements SensorEventListen
                 break;
             case Sensor.TYPE_ORIENTATION:
                 sensorDO.setCompass(values[0]);
+                sensorDO.setU_compass_direction(values[0]);
         }
         dataObjectMutableLiveData.postValue(sensorDO);
-
-//        String cardinalOrdinalDirection = "null";
-//
-//        if (sensorDO.setCompass(values[0]) >= 350 || sensorDO.setCompass(values[0]) <= 10)
-//            cardinalOrdinalDirection = "N";
-//        if (degree < 350 && degree > 280)
-//            cardinalOrdinalDirection = "NW";
-//        if (degree <= 280 && degree > 260)
-//            cardinalOrdinalDirection = "W";
-//        if (degree <= 260 && degree > 190)
-//            cardinalOrdinalDirection = "SW";
-//        if (degree <= 190 && degree > 170)
-//            cardinalOrdinalDirection = "S";
-//        if (degree <= 170 && degree > 100)
-//            cardinalOrdinalDirection = "SE";
-//        if (degree <= 100 && degree > 80)
-//            cardinalOrdinalDirection = "E";
-//        if (degree <= 80 && degree > 10)
-//            cardinalOrdinalDirection = "NE";
-//
-//        DegreeTV.setText("Direction: " + cardinalOrdinalDirection + "\nDegrees: " + Float.toString(degree) + "°");
     }
 
     @Override
