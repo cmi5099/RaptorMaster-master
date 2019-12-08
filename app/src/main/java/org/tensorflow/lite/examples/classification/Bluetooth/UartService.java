@@ -49,9 +49,9 @@ public class UartService extends Service {
             "com.nordicsemi.nrfUART.DEVICE_DOES_NOT_SUPPORT_UART";
 
     public static final UUID CCCD = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb");
-    public static final UUID GATT_SERVICE_UUID = UUID.fromString("a1c37828-ab6a-4cbc-bc76-58ed8c32900a");
+    public static final UUID GATT_SERVICE_UUID = UUID.fromString("6E400001-B5A3-F393-E0A9-E50E24DCCA9E");
     public static final UUID RX_CHAR_UUID = UUID.fromString("6E400002-B5A3-F393-E0A9-E50E24DCCA9E");
-    public static final UUID TX_CHAR_UUID = UUID.fromString("0ca42cab-c6c1-4d2d-9372-b657d686bdcd");
+    public static final UUID TX_CHAR_UUID = UUID.fromString("6E400003-B5A3-F393-E0A9-E50E24DCCA9E");
 
     // Implements callback methods for GATT events that the app cares about.  For example,
     // connection change and services discovered.
@@ -221,12 +221,6 @@ public class UartService extends Service {
      * callback.
      */
     public void disconnect() {
-        if (mBluetoothAdapter == null || mBluetoothGatt == null) {
-            Log.w(TAG, "BluetoothAdapter not initialized");
-            return;
-        }
-        mBluetoothGatt.disconnect();
-        // mBluetoothGatt.close();
     }
 
     /**
@@ -234,13 +228,6 @@ public class UartService extends Service {
      * released properly.
      */
     public void close() {
-        if (mBluetoothGatt == null) {
-            return;
-        }
-        Log.w(TAG, "mBluetoothGatt closed");
-        mBluetoothDeviceAddress = null;
-        mBluetoothGatt.close();
-        mBluetoothGatt = null;
     }
 
     /**

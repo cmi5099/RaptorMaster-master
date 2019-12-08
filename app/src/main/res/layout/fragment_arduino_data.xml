@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     android:background="@android:color/black"
     tools:context=".fragments.ArduinoDataFragment">
-
     <Button
         android:id="@+id/btnFrag"
         android:layout_width="0dp"
@@ -17,5 +16,4 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
