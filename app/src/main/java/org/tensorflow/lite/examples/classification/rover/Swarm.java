@@ -8,7 +8,7 @@ import java.nio.ByteBuffer;
 public class Swarm {
 
     UartService uart = new UartService();
-    SensorDataObject sdoCompass = new SensorDataObject();
+    SensorDataObject sdo = new SensorDataObject();
     FieldActivity fieldActivity = new FieldActivity();
     RoverParams rover = new RoverParams();
 
@@ -27,12 +27,13 @@ public class Swarm {
     int startingLane = roverId;
     String generalRoverDirection = (rover.isEven() == 0)? "down": "up";
     int startingBlock = (generalRoverDirection == "up")? 0: blocksPerLane;
+    int objectsFound = 0;
 
 
     //Rovers 1 and 3 are going to start at the bottom of the first and third lanes
     //Rovers 2 and 4 are going to start at the top of the second and fourth lanes
     public void startSwarm() {
-        departureDirection = sdoCompass.getCompass();
+        departureDirection = sdo.getCompass();
         setOtherDirections();
         alignWheels();
         //start TensorFlow recording
@@ -69,9 +70,12 @@ public class Swarm {
             goForward();
             if (objectScanned != "soccer ball")
                 fieldActivity.searchedBlock(currentLane, currentBlock);
-            else
-                fieldActivity.foundInBlock(currentLane, currentBlock);
-                found();
+                sdo.setU_object_found(false);
+
+            if (objectScanned == "soccer ball")
+            fieldActivity.foundInBlock(currentLane, currentBlock);
+            found(objectsFound++);
+            sdo.setU_object_found(true);
         }
         //Logic for making the proper U-turn to get into their next designated lane
         else {
@@ -148,7 +152,7 @@ public class Swarm {
 
     //Called when TensorFlow object confidence %60 && soccer ball
     //Sends notification to ServiceNow. Notifies other raptors
-    void found(){
+    void found(int objectsFound){
         stop();
     }
 
@@ -162,7 +166,7 @@ public class Swarm {
     //Turns wheels in proper direction and angle to realign arduino
     //back into original orientation while continuing forward
     float adjustWheelAlignment(){
-        float currentDirection = sdoCompass.getCompass();
+        float currentDirection = sdo.getCompass();
 
         //calulcate degree necessary
         return getAdjustedDegreeForSending(currentDirection);

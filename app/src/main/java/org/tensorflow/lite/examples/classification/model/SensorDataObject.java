@@ -18,9 +18,15 @@ public class SensorDataObject {
     float u_battery_level;
     float u_compass;
     String u_compass_direction;
+    boolean u_object_found;
 
+    public boolean isU_object_found() {
+        return u_object_found;
+    }
 
-    public float getCompass() { return u_compass;}
+    public void setU_object_found(boolean u_object_found) {
+        this.u_object_found = u_object_found;
+    }
 
     public String getU_compass_direction() {
         return u_compass_direction;
@@ -48,6 +54,8 @@ public class SensorDataObject {
             cardinalOrdinalDirection = "NE";
         this.u_compass_direction = cardinalOrdinalDirection;
     }
+
+    public float getCompass() { return u_compass;}
 
     public void setCompass(float compass) { this.u_compass= compass; }
 
