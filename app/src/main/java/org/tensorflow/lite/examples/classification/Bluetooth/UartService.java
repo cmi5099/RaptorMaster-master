@@ -170,7 +170,7 @@ public class UartService extends Service {
         // After using a given device, you should make sure that BluetoothGatt.close() is called
         // such that resources are cleaned up properly.  In this particular example, close() is
         // invoked when the UI is disconnected from the Service.
-        close();
+     //   close();
         return super.onUnbind(intent);
     }
 
@@ -249,28 +249,28 @@ public class UartService extends Service {
      * {@code BluetoothGattCallback#onConnectionStateChange(android.bluetooth.BluetoothGatt, int, int)}
      * callback.
      */
-    public void disconnect() {
-        if (mBluetoothAdapter == null || mBluetoothGatt == null) {
-            Log.w(TAG, "BluetoothAdapter not initialized");
-            return;
-        }
-        mBluetoothGatt.disconnect();
-       // mBluetoothGatt.close();
-    }
+//    public void disconnect() {
+//        if (mBluetoothAdapter == null || mBluetoothGatt == null) {
+//            Log.w(TAG, "BluetoothAdapter not initialized");
+//            return;
+//        }
+//        mBluetoothGatt.disconnect();
+//       // mBluetoothGatt.close();
+//    }
 
     /**
      * After using a given BLE device, the app must call this method to ensure resources are
      * released properly.
      */
-    public void close() {
-        if (mBluetoothGatt == null) {
-            return;
-        }
-        Log.w(TAG, "mBluetoothGatt closed");
-        mBluetoothDeviceAddress = null;
-        mBluetoothGatt.close();
-        mBluetoothGatt = null;
-    }
+//    public void close() {
+//        if (mBluetoothGatt == null) {
+//            return;
+//        }
+//        Log.w(TAG, "mBluetoothGatt closed");
+//        mBluetoothDeviceAddress = null;
+//        mBluetoothGatt.close();
+//        mBluetoothGatt = null;
+//    }
 
     /**
      * Request a read on a given {@code BluetoothGattCharacteristic}. The read result is reported
