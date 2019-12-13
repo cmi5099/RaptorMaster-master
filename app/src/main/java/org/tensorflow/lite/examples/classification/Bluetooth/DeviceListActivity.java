@@ -1,3 +1,25 @@
+
+/*
+ * Copyright (c) 2015, Nordic Semiconductor
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the
+ * documentation and/or other materials provided with the distribution.
+ *
+ * 3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this
+ * software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 package org.tensorflow.lite.examples.classification.Bluetooth;
 
 import android.app.Activity;
@@ -37,10 +59,10 @@ import java.util.Map;
 public class DeviceListActivity extends Activity {
     private BluetoothAdapter mBluetoothAdapter;
 
-    // private BluetoothAdapter mBtAdapter;
+   // private BluetoothAdapter mBtAdapter;
     private TextView mEmptyList;
     public static final String TAG = "DeviceListActivity";
-
+    
     List<BluetoothDevice> deviceList;
     private DeviceAdapter deviceAdapter;
     private ServiceConnection onService = null;
@@ -53,7 +75,7 @@ public class DeviceListActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+    	
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.title_bar);
@@ -84,12 +106,12 @@ public class DeviceListActivity extends Activity {
         populateList();
         mEmptyList = (TextView) findViewById(R.id.empty);
         Button cancelButton = (Button) findViewById(R.id.btn_cancel);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
+        cancelButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (mScanning==false) scanLeDevice(true);
-                else finish();
+            	
+            	if (mScanning==false) scanLeDevice(true); 
+            	else finish();
             }
         });
 
@@ -106,10 +128,10 @@ public class DeviceListActivity extends Activity {
         newDevicesListView.setAdapter(deviceAdapter);
         newDevicesListView.setOnItemClickListener(mDeviceClickListener);
 
-        scanLeDevice(true);
+           scanLeDevice(true);
 
     }
-
+    
     private void scanLeDevice(final boolean enable) {
         final Button cancelButton = (Button) findViewById(R.id.btn_cancel);
         if (enable) {
@@ -117,9 +139,9 @@ public class DeviceListActivity extends Activity {
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    mScanning = false;
+					mScanning = false;
                     mBluetoothAdapter.stopLeScan(mLeScanCallback);
-
+                        
                     cancelButton.setText(R.string.scan);
 
                 }
@@ -139,18 +161,18 @@ public class DeviceListActivity extends Activity {
     private BluetoothAdapter.LeScanCallback mLeScanCallback =
             new BluetoothAdapter.LeScanCallback() {
 
+        @Override
+        public void onLeScan(final BluetoothDevice device, final int rssi, byte[] scanRecord) {
+            runOnUiThread(new Runnable() {
                 @Override
-                public void onLeScan(final BluetoothDevice device, final int rssi, byte[] scanRecord) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            addDevice(device,rssi);
-                        }
-                    });
+                public void run() {
+                	
+                              addDevice(device,rssi);
                 }
-            };
-
+            });
+        }
+    };
+    
     private void addDevice(BluetoothDevice device, int rssi) {
         boolean deviceFound = false;
 
@@ -160,16 +182,16 @@ public class DeviceListActivity extends Activity {
                 break;
             }
         }
-
-
+        
+        
         devRssiValues.put(device.getAddress(), rssi);
         if (!deviceFound) {
-            deviceList.add(device);
+        	deviceList.add(device);
             mEmptyList.setVisibility(View.GONE);
+                 	
+        	
 
-
-
-
+            
             deviceAdapter.notifyDataSetChanged();
         }
     }
@@ -177,7 +199,7 @@ public class DeviceListActivity extends Activity {
     @Override
     public void onStart() {
         super.onStart();
-
+       
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
         filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
@@ -187,23 +209,23 @@ public class DeviceListActivity extends Activity {
     public void onStop() {
         super.onStop();
         mBluetoothAdapter.stopLeScan(mLeScanCallback);
-
+    
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mBluetoothAdapter.stopLeScan(mLeScanCallback);
-
+        
     }
 
-    private AdapterView.OnItemClickListener mDeviceClickListener = new AdapterView.OnItemClickListener() {
-
+    private OnItemClickListener mDeviceClickListener = new OnItemClickListener() {
+    	
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             BluetoothDevice device = deviceList.get(position);
             mBluetoothAdapter.stopLeScan(mLeScanCallback);
-
+  
             Bundle b = new Bundle();
             b.putString(BluetoothDevice.EXTRA_DEVICE, deviceList.get(position).getAddress());
 
@@ -211,17 +233,17 @@ public class DeviceListActivity extends Activity {
             result.putExtras(b);
             setResult(Activity.RESULT_OK, result);
             finish();
-
+        	
         }
     };
 
 
-
+    
     protected void onPause() {
         super.onPause();
         scanLeDevice(false);
     }
-
+    
     class DeviceAdapter extends BaseAdapter {
         Context context;
         List<BluetoothDevice> devices;
@@ -281,7 +303,7 @@ public class DeviceListActivity extends Activity {
                 tvpaired.setText(R.string.paired);
                 tvrssi.setVisibility(View.VISIBLE);
                 tvrssi.setTextColor(Color.WHITE);
-
+                
             } else {
                 tvname.setTextColor(Color.WHITE);
                 tvadd.setTextColor(Color.WHITE);

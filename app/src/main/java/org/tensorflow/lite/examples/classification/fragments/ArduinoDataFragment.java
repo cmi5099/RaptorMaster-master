@@ -38,12 +38,9 @@ public class ArduinoDataFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.fragment_arduino_data, container, false);
         Button arduinoFragbtn = (Button) view.findViewById(R.id.btnFrag);
-        arduinoFragbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), Bluetooth.class);
-                startActivity(intent);
-            }
+        arduinoFragbtn.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), Bluetooth.class);
+            startActivity(intent);
         });
         return view;
     }

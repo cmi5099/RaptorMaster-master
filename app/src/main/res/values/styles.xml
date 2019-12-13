@@ -13,8 +13,13 @@
         <item name="android:textColorPrimary">@android:color/white</item>
 
     </style>
+    <color name="black">#FF000000</color>
+    <color name="whitegrey">#FFF2F2F2</color>
     <style name="CustomToolBar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
         <item name="android:windowActionBarOverlay">true</item>
         <item name="windowActionBarOverlay">true</item>
+        <item name="android:windowBackground">@color/whitegrey</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 </resources>

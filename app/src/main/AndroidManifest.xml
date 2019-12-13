@@ -34,19 +34,14 @@
             android:screenOrientation="portrait" />
 
 
-        <activity android:name=".Bluetooth.Bluetooth"
-        android:configChanges="keyboardHidden|orientation|screenSize"
-        android:label="Team 2: Rover"
-        android:windowSoftInputMode="stateHidden">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.DEFAULT" />
-        </intent-filter>
-    </activity>
+        <activity
+            android:name=".Bluetooth.Bluetooth"
+            />
+        <activity
+            android:name=".Bluetooth.DeviceListActivity"
 
-
-        <activity android:name=".Bluetooth.DeviceListActivity"
-            android:theme="@android:style/Theme.Dialog" />
+            android:theme="@android:style/Theme.Dialog"
+            />
 
         <service
             android:name=".Bluetooth.UartService"
